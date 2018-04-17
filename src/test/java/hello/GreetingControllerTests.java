@@ -20,43 +20,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import javax.xml.ws.Response;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import hello.error.ApiError;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class GreetingControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, World!"));
-    }
+	@Test
+	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+		.andExpect(jsonPath("$.content").value("Hello, World!"));
+	}
 
-    @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
-        this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
-    }
-    
-    /**
-     * Generates HTTP error 404.
-     * @throws Exception
-     */
-    @Test
-    public void testeBasisPath() throws Exception {
-        this.mockMvc.perform(get("/").param("name", "Spring Community"))
-                .andDo(print()).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
-    }
+	@Test
+	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+		this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
+		.andDo(print()).andExpect(status().isOk())
+		.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+	}
+
+	/**
+	 * Generates HTTP error 404.
+	 * @throws Exception
+	 */
+	@Test
+	public void testeBasisPath() throws Exception {
+		this.mockMvc.perform(get("/").param("name", "Spring Community"))
+		.andDo(print()).andExpect(status().isNotFound());
+	}
+	
 }
